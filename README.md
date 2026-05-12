@@ -10,7 +10,7 @@
 ```
 
 <p align="center">
-  <img src="assets/leviathan-logo.png" width="220" alt="Leviathan Logo">
+  <img src="assets/leviathan.png" width="220" alt="Leviathan Logo">
 </p>
 
 <h1 align="center">🐉 Leviathan</h1>
