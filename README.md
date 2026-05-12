@@ -98,6 +98,36 @@ Instead of installing dozens of tools directly on your host system, Leviathan pr
 
 ---
 
+## Install
+
+```bash
+# Clone the repository
+git clone https://github.com/flfelipelima/leviathan.git
+cd leviathan
+
+# Make the controller executable
+chmod +x leviathan.sh
+
+# Full setup — builds image, starts container, downloads wordlists
+./leviathan.sh install
+
+# Drop into your offensive workstation
+./leviathan.sh shell
+```
+
+> **First build** compiles Go tools and installs all packages from Kali's repositories.  
+> Expect 10–20 minutes. Every subsequent start is instant.
+
+### Don't have Docker yet?
+
+```bash
+# Leviathan installs it for you
+sudo ./leviathan.sh install-docker
+
+# Then run the full setup
+./leviathan.sh install
+```
+
 ---
 
 ## Architecture
