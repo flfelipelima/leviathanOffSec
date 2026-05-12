@@ -1,0 +1,42 @@
+# System
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Docker generated files
+*.tar
+*.tar.gz
+*.zip
+docker-data/
+volumes/
+data/
+wordlists/
+
+# IDE
+.vscode/
+.idea/
+
+# Temporary files
+tmp/
+temp/
+.cache/
+
+# Secrets
+secrets/
+*.pem
+*.key
+*.crt
+
+# Reports and scan outputs
+reports/
+output/
+outputs/
+scan-results/

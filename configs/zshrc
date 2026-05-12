@@ -1,0 +1,171 @@
+# =============================================================================
+# LEVIATHAN — Offensive Security Workstation
+# ZSH Configuration
+# =============================================================================
+
+# ─── Powerlevel10k Instant Prompt ────────────────────────────────────────────
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# ─── Oh My Zsh ────────────────────────────────────────────────────────────────
+if [[ -d "/root/.oh-my-zsh" ]]; then
+  export ZSH="/root/.oh-my-zsh"
+else
+  export ZSH="$HOME/.oh-my-zsh"
+fi
+
+# ─── Theme ───────────────────────────────────────────────────────────────────
+ZSH_THEME="powerlevel10k/powerlevel10k"
+
+# ─── Plugins ─────────────────────────────────────────────────────────────────
+plugins=(
+  git
+  sudo
+  docker
+  docker-compose
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+  history-substring-search
+  colored-man-pages
+  extract
+)
+
+# ─── Load Oh My Zsh ──────────────────────────────────────────────────────────
+[[ -f "$ZSH/oh-my-zsh.sh" ]] && source "$ZSH/oh-my-zsh.sh"
+
+# ─── Powerlevel10k Config ────────────────────────────────────────────────────
+[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
+
+# ─── Environment ─────────────────────────────────────────────────────────────
+export GOPATH="/root/go"
+
+export PATH="/root/go/bin:/usr/local/go/bin:/opt/tools/bin:/usr/local/bin:$PATH"
+
+export EDITOR="nano"
+export VISUAL="nano"
+export PAGER="less"
+
+export TERM="xterm-256color"
+
+# ─── History ─────────────────────────────────────────────────────────────────
+HISTFILE=~/.zsh_history
+HISTSIZE=50000
+SAVEHIST=50000
+
+setopt APPEND_HISTORY
+setopt SHARE_HISTORY
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_VERIFY
+setopt EXTENDED_HISTORY
+
+# ─── Shell Behavior ──────────────────────────────────────────────────────────
+setopt AUTO_CD
+setopt AUTO_PUSHD
+setopt PUSHD_IGNORE_DUPS
+setopt INTERACTIVE_COMMENTS
+setopt COMPLETE_IN_WORD
+
+autoload -Uz compinit && compinit
+
+# ─── Aliases: General ────────────────────────────────────────────────────────
+alias c='clear'
+
+unalias gau 2>/dev/null || true
+
+alias ll='ls -lah --color=auto'
+alias la='ls -la --color=auto'
+alias l='ls -CF --color=auto'
+
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+
+alias reload='source ~/.zshrc'
+
+# ─── Better cat ──────────────────────────────────────────────────────────────
+alias cat='batcat --style=plain 2>/dev/null || bat --style=plain 2>/dev/null || command cat'
+
+# ─── Network ─────────────────────────────────────────────────────────────────
+alias ports='ss -tulnp'
+alias myip='curl -s https://ipinfo.io/ip && echo'
+
+# ─── Docker ──────────────────────────────────────────────────────────────────
+alias dps='docker ps'
+alias di='docker images'
+alias dex='docker exec -it'
+alias dlog='docker logs -f'
+
+# ─── Workspace ───────────────────────────────────────────────────────────────
+alias lev='cd /workspace'
+alias workspace='cd /workspace'
+
+# ─── Wordlists ───────────────────────────────────────────────────────────────
+alias seclists='ls /wordlists/SecLists/'
+alias wordlists='ls /wordlists/'
+alias rockyou='echo /wordlists/rockyou.txt'
+
+# ─── Recon Aliases ───────────────────────────────────────────────────────────
+alias sub='subfinder -silent'
+alias probehttp='httpx -silent'
+alias portscan='naabu -silent'
+alias vuln='nuclei -silent'
+
+# ─── Utilities ───────────────────────────────────────────────────────────────
+alias wl='wc -l'
+
+alias urldecode='python3 -c "
+import sys, urllib.parse
+print(urllib.parse.unquote(sys.stdin.read().strip()))
+"'
+
+alias urlencode='python3 -c "
+import sys, urllib.parse
+print(urllib.parse.quote(sys.stdin.read().strip()))
+"'
+
+alias b64d='base64 -d'
+alias b64e='base64'
+
+alias http='python3 -m http.server'
+
+# ─── Functions ───────────────────────────────────────────────────────────────
+recon() {
+  local target="$1"
+
+  if [[ -z "$target" ]]; then
+    echo "Usage: recon <domain>"
+    return 1
+  fi
+
+  mkdir -p /workspace/output
+
+  echo "[*] Starting recon on $target"
+
+  subfinder -d "$target" -silent \
+    | httpx -silent \
+    | tee "/workspace/output/recon_${target}_$(date +%Y%m%d_%H%M%S).txt"
+}
+
+portcheck() {
+  if [[ $# -ne 2 ]]; then
+    echo "Usage: portcheck <host> <port>"
+    return 1
+  fi
+
+  nc -zv "$1" "$2" 2>&1
+}
+
+extracturls() {
+  grep -Eo '(http|https)://[^"]+' "$1"
+}
+
+mkcd() {
+  mkdir -p "$1" && cd "$1"
+}
+
+# ─── Completion ──────────────────────────────────────────────────────────────
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'

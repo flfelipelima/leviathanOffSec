@@ -1,0 +1,36 @@
+# =============================================================================
+#  LEVIATHAN — Docker Compose
+#  Services: recon, web, exploit, network, passwords, cloud
+# =============================================================================
+
+services:
+  leviathan:
+    image: leviathan:latest
+    container_name: leviathan
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+
+    stdin_open: true
+    tty: true
+
+    working_dir: /workspace
+
+    volumes:
+      - ../configs/zshrc:/root/.zshrc
+      - ../configs/p10k.zsh:/root/.p10k.zsh
+
+    network_mode: host
+
+    privileged: true
+
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+
+    security_opt:
+      - seccomp:unconfined
+
+    restart: unless-stopped
+
+    command: /bin/zsh
