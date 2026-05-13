@@ -47,7 +47,7 @@ Forget spending hours installing conflicting packages, chasing missing dependenc
 
 
 ```
-One image. One container. Every tool you need.
+Build once. Hunt anywhere. Stay isolated. Stay reproducible. Stay sharp — legally.
 ```
 
 Instead of polluting your host with dozens of conflicting packages, Leviathan gives you an isolated, reproducible, fully-armed environment that starts in seconds and disappears without a trace when you're done. Fresh VPS, borrowed laptop, new Kali install — it doesn't matter. One command and you're fully armed.
