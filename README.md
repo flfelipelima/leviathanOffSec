@@ -39,7 +39,13 @@ Offensive Security • Dockerized • Reproducible • Fast Deploy
 
 </div>
 
+
 ## 📌 Overview
+
+<p align="center">
+  <img src="assets/leviathan-terminal.png" width="1220" alt="Leviathan Logo">
+</p>
+
 
 **Leviathan** is a portable offensive security workstation that lives inside a single Docker container. Built on Kali Linux rolling, it ships 50+ hand-picked tools, a fully-configured ZSH environment with Dracula/Powerlevel10k, and persistent wordlists — assembled once and ready for bug bounty, pentesting, and red team operations from day one.
 
